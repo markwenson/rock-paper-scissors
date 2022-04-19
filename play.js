@@ -89,12 +89,15 @@ function checkRoundWinner(player,comp) {
 }
 //Function to log winners after 5 rounds
 function logWinners(){
-    //Reads the winners[] array and filter items with the string "Player" in it
+    //Reads the winners[] array and filter items with the string "Player" in it. 
+    //The length property returns the length of an array
     //let playerWins = winners.filter(playerW).length;
     //function playerW(item) {return item == "Player"};
     //This is an arrow function of the function declaration above
     let playerWins = winners.filter((item) => item == "Player").length;
+    //Reads the winners[] array and filter items with the string "Computer" in it
     let computerWins = winners.filter((item) => item == "Computer").length;
+    //Reads the winners[] array and filter items with the string "Tie" in it
     let ties = winners.filter((item) => item == "Tie").length;
     console.log("Results:");
     console.log("Player wins: ", playerWins);
