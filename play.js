@@ -41,7 +41,7 @@ function playerChoice() {
     }
     //input to lowercase
     input = input.toLowerCase();
-    //Passes an argument to validateInput() to check if it's
+    //Passes an argument to validateInput() to check if input is usable
     let check = validateInput(input);
     //While loop runs when validateInput() returns false
     while (check == false) {
@@ -91,6 +91,7 @@ function checkRoundWinner(player,comp) {
 function logWinners(){
     //Reads the winners[] array and filter items with the string "Player" in it. 
     //The length property returns the length of an array
+    //It then stores the value to a variable
     //let playerWins = winners.filter(playerW).length;
     //function playerW(item) {return item == "Player"};
     //This is an arrow function of the function declaration above
