@@ -5,73 +5,100 @@
 // Create a string array of choices for Rock, Paper, Scissors
 const choices = ["rock", "paper", "scissors"];
 //Create a string array we can populate with winners for each round
-const winners = [];
+let winners = [];
 
-
+function resetGame() {
+    // resets the game
+    winners = [];
+    document.querySelector(".playerScore").textContent = "Score: 0";
+    document.querySelector(".computerScore").textContent = "Score: 0";
+    document.querySelector(".ties").textContent = "Ties: 0";
+    document.querySelector(".winner").textContent = "";
+    document.querySelector(".playerChoice").textContent = "";
+    document.querySelector(".computerChoice").textContent = "";
+    document.querySelector(".reset").style.display = "none";
+}
 //This function starts the game
 function startGame() {
-    //Loops the game 5 times
-    for(i = 1; i <= 5; i++){
-    playRound(i);
-    }
-    //Calls the function logWinners() to log the winner after round 5
-    logWinners();
+    //Play the game until someone wins 5 times
+    let images = document.querySelectorAll('img');
+    images.forEach(img => img.addEventListener('click', () => {
+        if(img.id) {
+            playRound(img.id);
+        }
+    }));
 }
 //Function to play a round
-function playRound(round) {
-    //Stores the returned value of playerChoice() to a variable
-    const playerSelection = playerChoice();
-    //Stores the returned value of computerChoice() to a variable
-    const computerSelection = computerChoice();
-    //Passes an argument containing the returned values of the player and computer's selection 
-    //It then stores the returned value of the round's winner to a variable 
-    const winner = checkRoundWinner(playerSelection, computerSelection);
-    //The push() method adds item to the winners[] array
+function playRound(playerChoice) {
+    let wins = checkWins();
+    if (wins >= 5) {
+        return;
+    }
+    const computerChoice = computerSelection();
+    const winner = checkRoundWinner(playerChoice, computerChoice);
     winners.push(winner);
-    //Passes arguments to the logRound() function
-    logRound(playerSelection, computerSelection, winner, round);
-}
-//Function to return the value of a player's choice
-function playerChoice() {
-    //get input from a player through a prompt
-    let input = prompt("Type Rock, Paper, or Scissors");
-    //when user clicks cancel, prompt will continue
-    while(input === null) {
-        input = prompt("Type Rock, Paper, or Scissors");
-    }
-    //input to lowercase
-    input = input.toLowerCase();
-    //Passes an argument to validateInput() to check if input is usable
-    let check = validateInput(input);
-    //While loop runs when validateInput() returns false
-    while (check == false) {
-        input = prompt("It is not case-sensitive but spelling needs to be exact. Type Rock, Paper, or Scissors");
-        while(input === null) {
-            input = prompt("It is not case-sensitive but spelling needs to be exact. Type Rock, Paper, or Scissors");
-        }
-        input = input.toLowerCase();
-        check = validateInput(input);
-    }
-    return input;
-}
-//Function to validate if input is within the array of choices
-function validateInput(choice){
-    if (choices.includes(choice)) {
-        return true;
-    }
-    else {
-        return false;
+    tallyWins();
+    displayRound(playerChoice, computerChoice, winner);
+    wins = checkWins();
+    if (wins == 5) {
+        //display end results
+        //change reset button to visible
+        //change the text to display winner
+        displayEnd();
     }
 }
+
+function displayEnd() {
+    let playerWins = winners.filter((item) => item == "Player").length
+    if (playerWins == 5) {
+        document.querySelector('.winner').textContent = "You won the game 5 times! Congratulations!";
+    } else {
+        document.querySelector('.winner').textContent = "Aw, computer won. Better luck next time.";
+    }
+    document.querySelector('.reset').style.display = "flex";
+}
+
+function displayRound(playerChoice, computerChoice, winner) {
+    document.querySelector('.playerChoice').textContent = `You chose ${playerChoice.charAt(0).toUpperCase() + playerChoice.slice(1)}`;
+    document.querySelector('.computerChoice').textContent = `Computer chose ${computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1)}`;
+    displayRoundWinner(winner);
+}
+
+function displayRoundWinner(winner) {
+    if (winner == "Player") {
+        document.querySelector('.winner').textContent = "You won the round!"
+    } else if (winner == "Computer") {
+        document.querySelector('.winner').textContent = "Computer Won."
+    } else {
+        document.querySelector('.winner').textContent = "It's a tie."
+    }
+}
+
+function tallyWins() {
+    let playerWinCount = winners.filter((item) => item == "Player").length;
+    let computerWinCount = winners.filter((item) => item == "Computer").length;
+    let tiesCount = winners.filter((item) => item == "Tie").length;
+    document.querySelector('.playerScore').textContent = `Score: ${playerWinCount}`;
+    document.querySelector('.computerScore').textContent = `Score: ${computerWinCount}`;
+    document.querySelector('.ties').textContent = `Ties: ${tiesCount}`;
+}
+
 //Function to return the value of the computer's choice
-function computerChoice() {
-    //computer choice
-    //from random generated number using math random function
-    //use math floor to round the number below
-    //then multiply by number of choices to get position in choices[] array
-    //returns choices[0,1,or 2]. Each number corresponds to the position in the choices[] array
-    return choices[Math.floor(Math.random()*choices.length)];
+function computerSelection() {
+    const choice = choices[Math.floor(Math.random()*choices.length)];
+    document.querySelector(`.${choice}`).classList.add('active');
+    setTimeout(() => {document.querySelector(`.${choice}`).classList.remove('active')}, 700);
+
+    return choice;
 }
+
+function checkWins() {
+    let playerWinCount = winners.filter((item) => item == "Player").length;
+    //Reads the winners[] array and filter items with the string "Computer" in it
+    let computerWinCount = winners.filter((item) => item == "Computer").length;
+    return Math.max(playerWinCount, computerWinCount);
+}
+
 //Function to return the round's winner
 function checkRoundWinner(player,comp) {
     if (player === comp) {
@@ -87,31 +114,6 @@ function checkRoundWinner(player,comp) {
         return "Computer";
     }
 }
-//Function to log winners after 5 rounds
-function logWinners(){
-    //Reads the winners[] array and filter items with the string "Player" in it. 
-    //The length property returns the length of an array
-    //It then stores the value to a variable
-    //let playerWins = winners.filter(playerW).length;
-    //function playerW(item) {return item == "Player"};
-    //This is an arrow function of the function declaration above
-    let playerWins = winners.filter((item) => item == "Player").length;
-    //Reads the winners[] array and filter items with the string "Computer" in it
-    let computerWins = winners.filter((item) => item == "Computer").length;
-    //Reads the winners[] array and filter items with the string "Tie" in it
-    let ties = winners.filter((item) => item == "Tie").length;
-    console.log("Results:");
-    console.log("Player wins: ", playerWins);
-    console.log("Computer wins: ", computerWins);
-    console.log("Ties: ", ties);
-}
-//Function to log details of each round. This function is called inside the playRound() function
-function logRound(playerChoice, computerChoice, winner, round) {
-    console.log("Round: ", round);
-    console.log("Player chose ", playerChoice);
-    console.log("Computer chose ", computerChoice);
-    console.log(winner, "won the round.");
-    console.log("-----------------------------------");
-}
 
 
+startGame();
