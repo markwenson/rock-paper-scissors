@@ -1,4 +1,4 @@
-//Rock, Paper, Scissors game
+//A Rock, Paper, Scissors game played in the console
 
 // 5 Rounds
 
