@@ -5,41 +5,42 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <script src="play-with-ui.js" defer></script>
-    <title>Rock Paper Scissors Game</title>
-    
-    
+    <script src="app.js" defer></script>
+    <title>Rock Paper Scissors</title>
 </head>
 <body>
-   <div class="score">
-       <h1 class="ties">Ties: 0</h1>
-   </div>
-
-   <div class="winnerDiv">
-       <h1 class="winner"></h1>
-       <button class="reset" onclick="resetGame()">Play Again?</button>
-   </div>
-
-   <div class="playerSection">
-        <h3 class="playerChoice"></h3>
-        <h3 class="playerScore">Score: 0</h3>
-        <div class="playerImgs">
-            <img src="./images/rock.png" alt="Rock" class="pImg" id="rock">
-            <img src="./images/paper.png" alt="Paper" class="pImg" id="paper">
-            <img src="./images/scissors.png" alt="Scissors" class="pImg" id="scissors">
-        </div>
-   </div>
-   <div class="computerSection">
-    <h3 class="computerChoice"></h3>
-    <h3 class="computerScore">Score: 0</h3>
-    <div class="computerImgs">
-        <img src="./images/rock.png" alt="Rock" class="rock">
-        <img src="./images/paper.png" alt="Paper" class="paper">
-        <img src="./images/scissors.png" alt="Scissors" class="scissors">
+<inner-column>
+    <div class="winnerDiv">
+        <h1 class="winner"></h1>
+        <button class="reset" onclick="resetGame()">Play Again?</button>
     </div>
-</div>
 
+    <div class="playerSelections">
+        <button class="selection" data-selection="rock">👊</button>
+        <button class="selection" data-selection="paper">🤚</button>
+        <button class="selection" data-selection="scissors">✌️</button>
+    </div>
 
+    <div class="results">
+        <div class="display-round">
+            <text class="player"></text>
+            <text class="computer"></text>
+            <text class="winner-results"></text>
+        </div>
+        <div class="div-grid">
+            <div>You 
+                <span class="you-score">0</span>
+            </div>
+
+            <div>Computer 
+                <span class="comp-score">0</span>
+            </div>
+
+            <div>Ties 
+                <span class="tie-score">0</span>
+            </div>
+        </div-grid>
+    </div>
+</inner-column>
 </body>
-
 </html>
